@@ -1,11 +1,42 @@
 # Author     :  Omar Hamed Marie
 # Reference  :  ArjanCodes
-# Description:  cohesion-coupling-app-problem
+# Description:  cohesion-coupling-app-solutions
 # Date       :  8 SEP 2022
 # Version    :  V 1.0
 
 import string
 import random
+
+
+class VehicleInfo:
+    """
+    Seperates Vehicle for vehicle info to decrease coupling
+    """
+    # Structure of variables to use | the data we will be dealing with in app
+    brand: str
+    catalogue_price: int
+    electric: bool
+
+    def __init__(self, brand, catalogue_price, electric):
+        self.brand = brand
+        self.catalogue_price = catalogue_price
+        self.electric = electric
+
+
+class Vehicle:
+    """
+    Seperates Vehicle for vehicle info to decrease coupling
+    """
+    # Structure of variables to use | the data we will be dealing with in app
+    id: int
+    license_plate: str
+    info: VehicleInfo  # Refrence to the actual vehicle info 
+
+    def __init__(self, id, license_plate, info):
+        self.id = id
+        self.license_plate = license_plate
+        self.info = info
+
 
 class VehicleRegistry:
     """
@@ -24,13 +55,26 @@ class VehicleRegistry:
 
     def generate_vehicle_license(self, id):
         """
-        Generates an license plate number from an id
-
+        Generate a license plate for the vehicle using the first two characters of the vehicle id
+        
         @param id: the pre-generated id
         @return: license plate number
         """
 
         return f"{id[:2]}-{''.join(random.choices(string.digits, k=2))}-{''.join(random.choices(string.ascii_uppercase, k=2))}"
+
+
+    def create_vehicle(self, brand):
+        """
+        Creates a vehicle inside VehicleRegistry class instead to increase cohesion
+
+        @param brand: str
+        """
+        vehicle_id    = self.generate_vehicle_id(12) 
+        license_plate = self.generate_vehicle_license(vehicle_id)
+
+        ## We still need the vehicle information to create new vehicle
+
 
 
 class Application:
@@ -55,12 +99,8 @@ class Application:
         # create a registry instance
         registry = VehicleRegistry()
 
-        # generate a vehicle id of length 12
-        vehicle_id = registry.generate_vehicle_id(12)
 
-        # now generate a license plate for the vehicle
-        # using the first two characters of the vehicle id
-        license_plate = registry.generate_vehicle_license(vehicle_id)
+
 
         # compute the catalogue price
         catalogue_price = 0
