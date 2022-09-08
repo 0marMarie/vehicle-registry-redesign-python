@@ -27,7 +27,7 @@ class Vehicle:
     """
     Seperates Vehicle for vehicle info to decrease coupling
     """
-    # Structure of variables to use | the data we will be dealing with in app
+    # Structure of variables to use | the data we will be dealing with in app 
     id: int
     license_plate: str
     info: VehicleInfo  # Refrence to the actual vehicle info 
