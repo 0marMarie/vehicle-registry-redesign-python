@@ -22,6 +22,18 @@ class VehicleInfo:
         self.catalogue_price = catalogue_price
         self.electric = electric
 
+    def compute_tax(self):
+        """Computing tax for the vehicle | Improves Cohesion"""
+        tax_percentage = 0.05
+        if self.electric:
+            tax_percentage = 0.02
+        return tax_percentage * self.catalogue_price
+
+    def print(self):
+        """prints vehicle information | Improves Cohesion"""
+        print(f"Brand:       { self.brand         } ")
+        print(f"Payable Tax: { self.compute_tax() } ")
+
 
 class Vehicle:
     """
@@ -37,6 +49,11 @@ class Vehicle:
         self.license_plate = license_plate
         self.info = info
 
+    def print(self):
+        """prints all vehicle needed data | Improves Cohesion"""
+        print(f"ID: {self.id}")
+        print(f"license_plate: {self.license_plate}")
+        self.info.print()
 
 class VehicleRegistry:
     """
@@ -89,7 +106,7 @@ class VehicleRegistry:
         vehicle_id    = self.generate_vehicle_id(12) 
         license_plate = self.generate_vehicle_license(vehicle_id)
         # We still need the VehicleInfo to create new Vehicle | done in constructor
-        return Vehicle(vehicle_id, license_plate, self.vehicle_info)
+        return Vehicle(vehicle_id, license_plate, self.vehicle_info[brand])
 
 
 
@@ -112,35 +129,10 @@ class Application:
         @return: None
         """
 
-        # create a registry instance
+        # create a registry instance | This also creates some dummy vehicle info
         registry = VehicleRegistry()
-
-
-
-
-        # compute the catalogue price
-        catalogue_price = 0
-        if brand == "Tesla Model 3":
-            catalogue_price = 60000
-        elif brand == "Volkswagen ID3":
-            catalogue_price = 35000
-        elif brand == "BMW 5":
-            catalogue_price = 45000
-
-        # compute the tax percentage (default 5% of the catalogue price, except for electric cars where it is 2%)
-        tax_percentage = 0.05
-        if brand == "Tesla Model 3" or brand == "Volkswagen ID3":
-            tax_percentage = 0.02
-
-        # compute the payable tax
-        payable_tax = tax_percentage * catalogue_price
-
-        # print out the vehicle registration information
-        print("Registration complete. Vehicle information:")
-        print(f"Brand: {brand}")
-        print(f"Id: {vehicle_id}")
-        print(f"License plate: {license_plate}")
-        print(f"Payable tax: {payable_tax}")
+        vehicle  = registry.create_vehicle(brand)       # create a new vehicle
+        vehicle.print()                                 # Print Vehicle data
 
 app = Application()
 app.register_vehicle("Volkswagen ID3")
