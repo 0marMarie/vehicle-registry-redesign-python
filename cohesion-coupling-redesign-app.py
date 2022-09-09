@@ -126,13 +126,14 @@ class Application:
         percetage and payable tax and prints out all the information..
 
         @param brand: brand name which is an integer
-        @return: None
+        @return: The created vehicle
         """
 
         # create a registry instance | This also creates some dummy vehicle info
         registry = VehicleRegistry()
-        vehicle  = registry.create_vehicle(brand)       # create a new vehicle
-        vehicle.print()                                 # Print Vehicle data
+        return registry.create_vehicle(brand)       # create a new vehicle
 
-app = Application()
-app.register_vehicle("Volkswagen ID3")
+# User code
+app     = Application()
+vehicle = app.register_vehicle("BMW 5")
+vehicle.print()
