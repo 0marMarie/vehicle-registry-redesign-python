@@ -10,7 +10,7 @@ import random
 
 class VehicleInfo:
     """
-    Seperates Vehicle for vehicle info to decrease coupling
+    Seperates Vehicle for vehicle info to reduce coupling
     """
     # Structure of variables to use | the data we will be dealing with in app
     brand: str
@@ -25,7 +25,7 @@ class VehicleInfo:
 
 class Vehicle:
     """
-    Seperates Vehicle for vehicle info to decrease coupling
+    Seperates Vehicle for vehicle info to reduce coupling
     """
     # Structure of variables to use | the data we will be dealing with in app 
     id: int
@@ -42,6 +42,20 @@ class VehicleRegistry:
     """
     Vehicle Registry class is a Container for two helper methods
     """
+
+    vehicle_info = {} # class attribute
+
+    def add_vehicle_info(self, brand, catalogue_price, electric):
+        """Function that adds vehicle information to an object vehicle_info"""
+        self.vehicle_info[brand] = VehicleInfo(brand, catalogue_price, electric)
+
+    # Initialize to add some information to vehicle_info object
+    def __init__(self):
+        """Add some vehicle's information inside vehicle_info object when initializing"""
+        self.add_vehicle_info("Volkswagen ID3" , 50000, True)
+        self.add_vehicle_info("Tesla Model 3", 65000, True)
+        self.add_vehicle_info("BMW 5", 70000, False)
+
 
     def generate_vehicle_id(self, length):
         """
@@ -66,14 +80,16 @@ class VehicleRegistry:
 
     def create_vehicle(self, brand):
         """
-        Creates a vehicle inside VehicleRegistry class instead to increase cohesion
+        Creates a vehicle inside VehicleRegistry class instead to increase cohesion and
+        reduces coupling.
 
         @param brand: str
+        @return: Vehicle obj
         """
         vehicle_id    = self.generate_vehicle_id(12) 
         license_plate = self.generate_vehicle_license(vehicle_id)
-
-        ## We still need the vehicle information to create new vehicle
+        # We still need the VehicleInfo to create new Vehicle | done in constructor
+        return Vehicle(vehicle_id, license_plate, self.vehicle_info)
 
 
 
